@@ -4,10 +4,10 @@ module.exports = {
 
   render(req, res, error, success){
 
-    res.render('reservation', {
-      title: 'Reservas - Restaurante Saboroso!',
-      background: 'images/img_bg_2.jpg',
-      h1: 'Reserve uma mesa!',
+    res.render('contact', {
+      title: 'Contato - Restaurante Saboroso!',
+      background: 'images/img_bg_3.jpg',
+      h1: 'Diga um oi!',
       body: req.body,
       error,
       success
@@ -20,18 +20,13 @@ module.exports = {
 
       let f = fields;
 
-      let date = f.date.split('/');
-      f.date = `${date[2]}-${date[1]}-${date[0]}`;
-
       conn.query(`
-        INSERT INTO tb_reservations (name, email, people, date, time) 
-        VALUES(?, ?, ?, ?, ?)
+        INSERT INTO tb_contacts (name, email, message) 
+        VALUES(?, ?, ?)
       `, [
         f.name,
         f.email,
-        f.people,
-        f.date,
-        f.time
+        f.message,
       ], (err, results)=>{
   
         if (err) {

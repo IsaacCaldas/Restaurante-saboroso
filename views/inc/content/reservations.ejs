@@ -4,18 +4,7 @@
       <div class="col-md-12">
         <div class="col-md-6 animate-box">
 
-        <!-- SESSÃO: error OR success in reservation -->
-
-        <% if (typeof error === "string") { %>
-            <div class="alert alert-danger">
-                <%= error %>
-            </div>
-        <% } %>
-        <% if (typeof success === "string") { %>
-            <div class="alert alert-success">
-                <%= success %>
-            </div>
-        <% } %>
+            <%- include('alerts') -%>
 
             <h3>Reserva de mesa</h3>
                   <form action="/reservation" method="post">
