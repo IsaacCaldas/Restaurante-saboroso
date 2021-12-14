@@ -58,7 +58,15 @@ router.post('/reservation', function(req, res, next){
     reservations.render(req, res, 'Selecione o horário.');
 
   } else {
-    res.send(req.body);
+
+      reservations.save(req.body).then(results =>{
+
+        req.body = {};
+        reservations.render(req, res, null, 'Reserva realizada com êxito. Esperamos você aqui! 😄');
+    
+      }).catch(err =>{
+      reservations.render(req, res, err.message);
+    });
   }
 });
 
