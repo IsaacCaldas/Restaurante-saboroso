@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+
+<%- include('head') -%> <!-- Não precisa por a extensão: EJS. Pois por padrão ele já procura pela mesma. Este código de reutilização é parecido com laravel PHP--> <!-- Neste include é 'inc/head', porém como já estão dentro da pasta INC não precisa citar no include -->
+
+<body>
+
+	<div class="gtco-loader"></div>
+
+	<div id="page">
+
+    <%- include('header-menu') -%>
+   
+    <% if (typeof isHome === 'boolean' && isHome) { %>
+
+      <%- include('header-index') -%>
+
+    <% } else { %>
+
+      <%- include('header') -%>
+
+    <% } %>
+
