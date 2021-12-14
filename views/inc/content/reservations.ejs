@@ -3,8 +3,13 @@
     <div class="row">
       <div class="col-md-12">
         <div class="col-md-6 animate-box">
-        <h3>Reserva de mesa</h3>
-                  <form action="#">
+        <% if (typeof error === "string") { %>
+            <div class="alert alert-danger">
+                <%= error %>
+            </div>
+        <% } %>
+            <h3>Reserva de mesa</h3>
+                  <form action="/reservation" method="post">
                       <div class="row form-group">
                           <div class="col-md-12">
                               <label for="inputName">Nome</label>
