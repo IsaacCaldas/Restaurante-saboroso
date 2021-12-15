@@ -82,11 +82,20 @@ router.get('/menus', function(req, res, next) {
     res.render('admin/menus', admin.getParams(req, {
       data
     }));
-
-  }).catch(err =>{
-    console.error(err);
   }); 
 });
+
+router.post('/menu', function(req, res, next){
+
+  menus.save(req.fields, req.files).then(results =>{
+    res.send(results);
+    
+  }).catch(err =>{
+    res.send(err);
+  })
+
+});
+
 
 router.get('/reservations', function(req, res, next) {
 
