@@ -1,11 +1,11 @@
 module.exports = {
 
-  getMenus(){
+  getMenus(req){
 
-    return [
+    let menus = [
       {
         text:'Tela Inicial',
-        href:'/',
+        href:'/admin/',
         icon:'home',
         active:false
       },
@@ -40,5 +40,17 @@ module.exports = {
         active:false
       }
     ];
+
+    // 'map' = Mapeia todos os objetos e quando achar a posição ele faz a ação. 
+    menus.map(menu => {
+
+      if (menu.href === `/admin${req.url}`){
+        menu.active = true;
+      }
+
+      console.log(req.url, menu.href);
+    });
+    
+    return menus;
   }
 }
