@@ -6,6 +6,9 @@ var admin = require('./../inc/admin');
 var menus = require('./../inc/menus');  
 var reservations = require('./../inc/reservations');
 
+var moment = require('moment');
+moment.locale('pt-BR');
+
 var router = express.Router();
 
 router.use(function(req, res, next){
@@ -114,7 +117,8 @@ router.get('/reservations', function(req, res, next) {
 
     res.render('admin/reservations', admin.getParams(req, {
       date: {},
-      data
+      data,
+      moment
     }));
 
   });
