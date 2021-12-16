@@ -21,14 +21,14 @@ app.use(function(req, res, next){
   if (req.method === 'POST' && contentType.indexOf('multipart/form-data;') > -1){
 
     var form = formidable.IncomingForm({
-      uploadDir: path.join(__dirname, './public/images'),
+      uploadDir: path.join(__dirname, '/public/images'),
       keepExtensions:true
     });
   
     form.parse(req, function(err, fields, files){
     
-      req.fields = fields
-      req.file = files
+      req.fields = fields;
+      req.files = files;
 
       next()
     });
@@ -43,10 +43,10 @@ app.set('view engine', 'ejs');
 
 app.use(session({
 
-  /*store: new RedisStore({
+  store: new RedisStore({
     host:'localhost',
     port:6379
-  }),*/
+  }),
   secret:'p@ssw0rd',
   resave:true,
   saveUninitialized:true
