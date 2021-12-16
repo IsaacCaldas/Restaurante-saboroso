@@ -27,15 +27,44 @@ module.exports = {
 
       let f = fields;
 
-      conn.query(`
+      let query, queryPhoto = '', params = [
+                  f.title,
+                  f.description,
+                  f.price,
+                ];
+
+      if (files.photo.name){
+
+        queryPhoto = ',photo = ?';
+        params.push(f.photo);
+
+      } 
+
+      if (parseInt(f.id) > 0){
+
+        params.push(f.id);
+
+        query = `
+          UPDATE tb_menus
+          SET title = ?,
+              description = ?,
+              price = ?
+              ${queryPhoto}
+          WHERE id = ?
+        `;
+
+      } else {
+
+        if (!files.photo.name){
+          reject('Envie a foto do novo prato.')
+        }
+
+        query = `
         INSERT INTO tb_menus (title, description, price, photo) 
         VALUES (?, ?, ?, ?)
-      `, [
-        f.title,
-        f.description,
-        f.price,
-        f.photo
-      ], (err, results)=>{
+      `;
+
+      } conn.query(query, params, (err, results)=>{
         if (err){
           reject(err);
           
@@ -43,7 +72,6 @@ module.exports = {
           resolve(results);
         }
       });
-    
     });
   }
 

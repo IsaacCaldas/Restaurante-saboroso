@@ -15,10 +15,7 @@ var app = express();
 
 app.use(function(req, res, next){
 
-  let contentType = req.headers['content-type'];
-
-
-  if (req.method === 'POST' && contentType.indexOf('multipart/form-data;') > -1){
+  if (req.method === 'POST'){
 
     var form = formidable.IncomingForm({
       uploadDir: path.join(__dirname, '/public/images'),
@@ -27,6 +24,7 @@ app.use(function(req, res, next){
   
     form.parse(req, function(err, fields, files){
     
+      req.body = fields;
       req.fields = fields;
       req.files = files;
 
@@ -54,7 +52,6 @@ app.use(session({
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
