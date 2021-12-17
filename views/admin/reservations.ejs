@@ -215,14 +215,11 @@
     deleteUrl:'/admin/reservations/${data.id}',
     deleteMsg:'Deseja realmente excluir a reserva de ${data.name}?',
 
-    listeners:{
-      beforeUpdateClick:(e)=>{
-        console.log('beforeClick');
-      },
-      afterUpdateClick:(e)=>{
-        console.log('afterClick');
+    /*listeners:{
+      afterUpdateClick: (e)=>{
+        alert('EDIT');
       }
-    }
+    }*/
   });
 
 </script>
