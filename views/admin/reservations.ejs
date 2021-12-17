@@ -74,8 +74,7 @@
                   <td><%= row.people %></td>
                   <td><%= moment(row.date).format('DD [de] MMMM [de] YYYY') %></td>
                   <td><%= row.time %></td>
-                  <td><button type="button" class="btn btn-xs btn-info btn-update" data-toggle="modal" data-target="#modal-update"><i
-                        class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" class="btn btn-xs btn-danger btn-delete"><i
+                  <td><button type="button" class="btn btn-xs btn-info btn-update"><i class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" class="btn btn-xs btn-danger btn-delete"><i
                         class="fa fa-trash"></i> Excluir</button></td>
                 </tr>
 
@@ -204,7 +203,8 @@
     </div>
 
 <%- include('inc/footer') -%>
-   
+
+<script src='/js/moment.min.js'></script>
 <script src='/js/hcode-formsave.js'></script>
 
 <script>
@@ -238,7 +238,7 @@
 
       let data = JSON.parse(tr.dataset.row);
 
-      if(confirm(`Deseja realmente excluir: ${data.title}?`)){
+      if(confirm(`Deseja realmente excluir a reserva de ${data.name}?`)){
         
         fetch(`/admin/reservations/${data.id}`, {
           method:'DELETE'
@@ -264,10 +264,21 @@
       
       for (let name in data){
 
-        let input = formUpdate.querySelector(`[name=${name}]`);
-        
-        if (input){
-          input.value = data[name];
+      let input = formUpdate.querySelector(`[name=${name}]`);
+
+      switch(name){
+
+        case 'date':
+
+          if (input){
+            input.value = moment(data[name]).format('YYYY-MM-DD');
+          }       
+          break;
+
+        default:
+          if (input){
+            input.value = data[name];
+          }
         }
       }
 

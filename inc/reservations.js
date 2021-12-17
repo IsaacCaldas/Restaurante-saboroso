@@ -59,7 +59,7 @@ module.exports = {
           UPDATE tb_reservations
           SET name = ?,
               email = ?,
-              people = ?
+              people = ?,
               date = ?,
               time = ?
           WHERE id = ?
