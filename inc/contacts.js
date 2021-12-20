@@ -13,6 +13,20 @@ module.exports = {
       success
     });
   },
+
+  getContacts(){
+
+    return new Promise((resolve, reject) => {
+      
+      conn.query(`SELECT * FROM tb_contacts ORDER BY name
+      `, (err, results) =>{
+        if(err){
+          reject(err);
+        }
+        resolve(results);
+      });
+    });
+  },
   
   save(fields){
 
@@ -34,6 +48,26 @@ module.exports = {
         } else {
           resolve(results);
         }
+      });
+    });
+  },
+
+  delete(id){
+
+    return new Promise((resolve, reject)=>{
+
+      conn.query(`
+        DELETE FROM tb_contacts WHERE id = ?
+      `, [
+        id
+      ], (err, results)=>{
+
+        if(err){
+          reject(err);
+        } else {
+          resolve(results);
+        }
+
       });
     });
   }
