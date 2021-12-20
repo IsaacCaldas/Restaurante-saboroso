@@ -67,7 +67,7 @@
   <div class="modal fade" id="modal-update-password">
     <div class="modal-dialog">
       <div class="modal-content" style="border-top: 3px solid #f39c12;">
-        <form method="post">
+        <form method="post" action="/admin/users/password-change">
           <input type="hidden" name="id">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -173,7 +173,26 @@
 // COMPONENTES PADRAO
   new HcodeGrid({
     deleteUrl:'/admin/users/${data.id}',
-    deleteMsg:'Deseja realmente excluir o usuário ${data.name}?'
+    deleteMsg:'Deseja realmente excluir o usuário ${data.name}?',
+    listeners:{
+      buttonClick: (btn, data, e) => {
+
+        document.querySelector('#modal-update-password form [name = id]').value = data.id;
+
+        $('#modal-update-password').modal('show');
+      }
+    }
+  });
+
+  document.querySelector('#modal-update-password form').save({
+
+    success: () =>{
+      window.location.reload();
+    },
+    failure: err =>{
+      alert(err);
+    }
+
   });
 
 </script>
