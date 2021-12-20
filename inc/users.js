@@ -53,15 +53,15 @@ module.exports = {
     });
   },
 
-  save(fields, files){
+  save(fields){
 
     return new Promise((resolve, reject) =>{
 
       let f = fields;
 
-      let query, queryPhoto = '', params = [
+      let query, params = [
                   f.name,
-                  f.email,
+                  f.email
                 ];
 
       if (parseInt(f.id) > 0){
@@ -71,20 +71,20 @@ module.exports = {
         query = `
           UPDATE tb_users
           SET name = ?,
-              email = ?,
+              email = ?
           WHERE id = ?
         `;
 
       } else {
 
         query = `
-        INSERT INTO tb_users (name, email, password) 
-        VALUES (?, ?, ?)
+          INSERT INTO tb_users (name, email, password) 
+          VALUES (?, ?, ?)
       `;
 
         params.push(f.password);
 
-      } conn.query(query, params, (err, results)=>{
+      } conn.query(query, params, (err, results) =>{
         if (err){
           reject(err);
           

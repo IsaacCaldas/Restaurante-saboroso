@@ -33,16 +33,26 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1.</td>
-                        <td>Hcode</td>
-                        <td>contato@hcode.com.br</td>
-                        <td>
-                            <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-update"><i class="fa fa-pencil"></i> Editar</button>&nbsp;
-                            <button type="button" class="btn btn-xs btn-warning btn-update" data-toggle="modal" data-target="#modal-update-password">
-                                <i class="fa fa-lock"></i> Alterar Senha</button>&nbsp;
-                            <button type="button" class="btn btn-xs btn-danger btn-delete"><i class="fa fa-trash"></i> Excluir</button></td>
+
+                  <% data.forEach(function(row) { %>
+
+                    <tr data-row="<%= JSON.stringify(row) %>">
+                      <td><%= row.id %></td>
+                      <td><%= row.name %></td>
+                      <td><%= row.email %></td>
+                      <td>
+                        
+                        <button type="button" class="btn btn-xs btn-info btn-update"><i class="fa fa-pencil"></i> Editar</button>&nbsp;
+                        <button type="button" class="btn btn-xs btn-warning">
+                            <i class="fa fa-lock"></i> Alterar Senha</button>&nbsp;
+                        <button type="button" class="btn btn-xs btn-danger btn-delete"><i class="fa fa-trash"></i> Excluir</button>
+
+                      </td>
+
                     </tr>
+    
+                    <% }); %>
+    
                 </tbody>
             </table>
         </div>
@@ -121,7 +131,7 @@
     <!-- /.modal-dialog -->
   </div>
   
-  <div class="modal fade" id="modal-update">
+  <div class="modal fade" id="modal-update">  
     <div class="modal-dialog">
       <div class="modal-content" style="border-top: 3px solid #00c0ef;">
         <form method="post">
@@ -154,3 +164,17 @@
   </div>
 
 <%- include('inc/footer') -%>
+
+<script src='/js/hcode-formsave.js'></script>
+<script src='/js/hcode-grid.js'></script>
+
+<script>
+
+// COMPONENTES PADRAO
+  new HcodeGrid({
+    deleteUrl:'/admin/users/${data.id}',
+    deleteMsg:'Deseja realmente excluir o usuário ${data.name}?'
+  });
+
+</script>
+
