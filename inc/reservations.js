@@ -3,27 +3,53 @@ const Pagination = require('./Pagination');
 
 module.exports = {
 
-  getReservations(page){
+  getReservations(req){
 
-    if(!page) {
-      page = 1;
-    }
+    return new Promise((resolve, reject) => {
+      
+      let page = req.query.page;
+      let dtStart = req.query.start;
+      let dtEnd = req.query.end;
 
-    let pag = new Pagination(
+      if(!page) {
+        page = 1;
+      }
+  
+      let params = [];
+  
+      if(dtStart && dtEnd){
+  
+        params.push(dtStart, dtEnd);
+      }
+  
+      let pag = new Pagination(
+  
+        /* SQL_CALC_FOUND_ROWS: MULTIPLE-STATEMENT: normalmente linguagens de banco de dados só permite um comando por vez, então usamos esse comando para executar na mesma query retornando a quantidade de linhas encontradas. É mais rápido que a função COUNT */
+  
+        `
+          SELECT SQL_CALC_FOUND_ROWS * 
+          FROM tb_reservations
+          ${(dtStart && dtEnd) ? 'WHERE date BETWEEN ? AND ?' : ''}
+          ORDER BY name LIMIT ?, ?
+  
+        `
+        /* SELECT FOUND_ROWS() */
+  
+        /* LIMIT: 2 parametros: O primeiro é o número da 'página' 
+        o segundo limita o tanto de rows que aparecerá pelo valor de limite definido: que no pagination.js está limitado para 10 registros. */
+      ,
+        params
+      );
+  
+      pag.getPage(page).then(data => {
 
-      /* SQL_CALC_FOUND_ROWS: MULTIPLE-STATEMENT: normalmente linguagens de banco de dados só permite um comando por vez, então usamos esse comando para executar na mesma query retornando a quantidade de linhas encontradas. É mais rápido que a função COUNT */
+        resolve({
+          data,
+          links: pag.getNavigation(req.query)
+        });
+      });
 
-      `
-        SELECT SQL_CALC_FOUND_ROWS * FROM tb_reservations ORDER BY name LIMIT ?, ?
-
-      `
-      /* SELECT FOUND_ROWS() */
-
-      /* LIMIT: 2 parametros: O primeiro é o número da 'página' 
-      o segundo limita o tanto de rows que aparecerá pelo valor de limite definido: que no pagination.js está limitado para 10 registros. */
-    );
-
-    return pag.getPage(page);
+    });
   },
 
   render(req, res, error, success){
