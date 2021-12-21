@@ -1,22 +1,29 @@
 const conn = require('./db');
+const Pagination = require('./Pagination');
 
 module.exports = {
 
-  getReservations(){
+  getReservations(page){
 
-    return new Promise((resolve, reject) => {
-      
-      conn.query(`
-        SELECT * FROM tb_reservations ORDER BY date DESC
-      `, (err, results) =>{
-        if(err){
-          reject(err);
-        } 
+    if(!page) {
+      page = 1;
+    }
 
-        resolve(results);
+    let pag = new Pagination(
 
-      });
-    });
+      /* SQL_CALC_FOUND_ROWS: MULTIPLE-STATEMENT: normalmente linguagens de banco de dados só permite um comando por vez, então usamos esse comando para executar na mesma query retornando a quantidade de linhas encontradas. É mais rápido que a função COUNT */
+
+      `
+        SELECT SQL_CALC_FOUND_ROWS * FROM tb_reservations ORDER BY name LIMIT ?, ?
+
+      `
+      /* SELECT FOUND_ROWS() */
+
+      /* LIMIT: 2 parametros: O primeiro é o número da 'página' 
+      o segundo limita o tanto de rows que aparecerá pelo valor de limite definido: que no pagination.js está limitado para 10 registros. */
+    );
+
+    return pag.getPage(page);
   },
 
   render(req, res, error, success){
