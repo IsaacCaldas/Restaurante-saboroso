@@ -4,8 +4,12 @@ var menus = require('./../inc/menus');
 var reservations = require('./../inc/reservations');
 var contacts = require('./../inc/contacts');
 var emails = require('./../inc/emails');
+const { Router } = require('express');
 
 var router = express.Router();
+
+
+module.exports = function(io){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -39,6 +43,9 @@ router.post('/contact', function(req, res, next){
     contacts.save(req.body).then(results =>{
 
         req.body = {};
+
+        io.emit('dashboard update');
+
         contacts.render(req, res, null, 'Contato enviado! 😄');
     
       }).catch(err =>{
@@ -85,6 +92,9 @@ router.post('/reservation', function(req, res, next){
       reservations.save(req.body).then(results =>{
 
         req.body = {};
+
+        io.emit('dashboard update');
+        
         reservations.render(req, res, null, 'Reserva realizada com êxito. Esperamos você aqui! 😄');
     
       }).catch(err =>{
@@ -112,4 +122,6 @@ router.post('/subscribe', function(req, res, next){
   });
 });
 
-module.exports = router;
+  return router;
+
+};

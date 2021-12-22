@@ -153,7 +153,7 @@ module.exports = {
           WHERE
             date BETWEEN ? AND ?
           GROUP BY YEAR(date) DESC, MONTH(date) DESC
-          ORDER BY YEAR(date) DESC, MONTH(date) DESC;)
+          ORDER BY YEAR(date), MONTH(date);)
       `, [
         req.query.start,
         req.query.end
@@ -178,6 +178,30 @@ module.exports = {
             months,
             values
           });
+
+        }
+      });
+    });
+  },
+
+  dashboard(){
+
+    return new Promise((resolve, reject) => {
+
+      conn.query(`
+      SELECT
+        (SELECT COUNT(*) FROM tb_contacts) AS nrcontacts,
+        (SELECT COUNT(*) FROM tb_menus) AS nrmenus,
+        (SELECT COUNT(*) FROM tb_reservations) AS nrreservations,
+        (SELECT COUNT(*) FROM tb_users) AS nrusers;
+    `, (err, results) => {
+
+        if (err) {
+          reject(err);
+
+        } else {
+          
+          resolve(results[0]);
 
         }
       });
