@@ -62,7 +62,6 @@ app.use(session({
 }));
 
 app.use(logger('dev'));
-app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -85,7 +84,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-http.RequestListener(3000, function(){
+http.listen(3000, function(){
 
   console.log('Servidor em execução...');
 
