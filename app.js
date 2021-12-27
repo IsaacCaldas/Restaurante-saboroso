@@ -12,19 +12,18 @@ var path = require('path');
 
 var app = express();
 
-var http = http.Server(app);
-var io = socket(http);
+var http = http.Server(app)
+var io = socket(http)
 
 io.on('connection', function(socket){
 
-  console.log('Novo usuário conectado!');
-    /* 
-        io.emit: envia para todos os usuários.
-        
-        socket.emit: envia somente ao novo usuário cadastrado.
-    */
-});
-
+  console.log('Usuario conectado')
+  /* 
+    io.emit: envia para todos os usuários.
+    
+    socket.emit: envia somente ao novo usuário cadastrado.
+  ]*/
+})
 
 var indexRouter = require('./routes/index')(io);
 var adminRouter = require('./routes/admin')(io);

@@ -209,45 +209,38 @@
 
 <%- include('inc/footer') -%>
 
-<script src='/js/moment.min.js'></script>
-<script src='/admin/bower_components/chart.js/dist/Chart.min.js'></script>
-<script src='/js/hcode-formsave.js'></script>
-<script src='/js/hcode-grid.js'></script>
-
+<script src="/js/moment.min.js"></script>
+<script src="/admin/bower_components/chart.js/dist/Chart.min.js"></script>
+<script src="/js/hcode-formsave.js"></script>
+<script src="/js/hcode-grid.js"></script>
 ]
 <script>
 
 // COMPONENTES PADRAO
+
   new HcodeGrid({
     deleteUrl:'/admin/reservations/${data.id}',
-    deleteMsg:'Deseja realmente excluir a reserva de ${data.name}?',
-
-    onUpdateLoad: (formUpdate, name, data) => {
-
-      let input = formUpdate.querySelector(`[name=${name}]`);
+    onUpdateLoad: (form,name,data)=>{
+    
+      let input = form.querySelector(`[name=${name}]`);
 
       switch(name){
 
         case 'date':
-          if (input){
-            input.value = moment(data[name]).format('YYYY-MM-DD');
-          }       
-          break;
-
+        if (input) input.value = moment(data[name]).format('YYYY-MM-DD');
+        break;
+        
         default:
-          if (input){
-            input.value = data[name];
-          }
+          if (input) input.value = data[name];
       }
     }
-  });
-
-  let graphic = new Chart(document.querySelector('#chart').getContext('2d'), {
+  })
+  let grafico = new Chart(document.querySelector('#chart').getContext('2d'),{
     type:'line',
     data:{},
     options:{
       tooltips:{
-        mode: 'index',
+        mode:'index',
         intersect: false
       },
       scales:{
@@ -255,38 +248,34 @@
           display:true,
           scaleLabel:{
             display:true,
-            labelString:'Mês'
-          }
+            labelString:'Mes'
+          } 
         }],
         yAxes:[{
           display:true,
           scaleLabel:{
             display:true,
             labelString:'Reservas'
-          }
+          } 
         }]
       }
     }
-  });
-
+  })
   fetch(`/admin/reservations/chart${window.location.search}`)
-    .then(response => response.json())
-    .then(json => {
-      
-      graphic.data = {
-        labels: json.months,
-        datasets:[{
-          data: json.values,
-          label:'Reservas',
-          backgroundColor: 'rgb(54, 162, 235',
-          borderColor: '#3690b5',
-          fill: true,
-          pointBackgroundColor: '#fff'
-        }] 
-      };
-
-      graphic.update();
-
-    });
+  .then(response=>response.json())
+  .then(json=>{
+    grafico.data = {
+      labels: json.months,
+      datasets: [{
+        data:json.values,
+        label:'Reservas',
+        backgroundColor:'rgb(54,162,235)',
+        borderColor:'rgb(54,162,235)',
+        fill:true,
+        pointBackgroundColor:'#FFF'
+      }]
+    }
+    grafico.update()
+  });
 
 </script>

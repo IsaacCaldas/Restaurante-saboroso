@@ -96,25 +96,18 @@
 <script>
 
   function refreshDashboard(){
-
     fetch('/admin/dashboard')
-      .then(response = response.json())
-      .then(json => {
-
-        document.querySelector("#nrreservations").innerHTML = json.nrreservations;
-        document.querySelector("#nrcontacts").innerHTML = json.nrcontacts;
-        document.querySelector("#nrmenus").innerHTML = json.nrmenus;
-        document.querySelector("#nrusers").innerHTML = json.nrusers;
-
-    });
+      .then(response => response.json())
+      .then(json=>{
+        document.querySelector('#nrreservations').innerHTML = json.nrreservations;
+        document.querySelector('#nrcontacts').innerHTML = json.nrcontacts;
+        document.querySelector('#nrmenus').innerHTML = json.nrmenus;
+        document.querySelector('#nrusers').innerHTML = json.nrusers;
+      });
   }
-
-  let socket = io();
-
+  let socket = io()
   socket.on('dashboard update', function(){
-
     refreshDashboard();
-
-  });
+  })
 
 </script> 

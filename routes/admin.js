@@ -43,21 +43,23 @@ module.exports = function(io){
   // HOME
   router.get('/', function(req, res, next) {
   
-    admin.dashboard().then(data => {
-      res.render('admin/index', admin.getParams(req, {
-        data 
+    admin.dashboard().then(data=>{
+            
+      res.render("admin/index",admin.getParams(req, {
+          data
       }));
+          
     }).catch(err =>{
-      console.error(err);
+        console.error(err)
     });
   });
   
   router.get('/dashboard', function(req, res, next) {
   
-    reservations.dashboard().then(data => {
-  
-      res.send(data);
-  
+    reservations.dashboard().then(data=>{
+
+      res.send(data)
+
     });
   });
   

@@ -141,71 +141,62 @@ module.exports = {
   },
 
   chart(req){
-    
-    return new Promise((resolve, reject) => {
+
+    return new Promise((resolve,reject)=>{
 
       conn.query(`
-          SELECT
-            CONCAT(YEAR(date), '-', MONTH(date)) AS date, 
-            COUNT(*) AS total,
-            SUM(people) / COUNT(*) AS avg_people
-          FROM tb_reservations
-          WHERE
-            date BETWEEN ? AND ?
-          GROUP BY YEAR(date) DESC, MONTH(date) DESC
-          ORDER BY YEAR(date), MONTH(date);)
-      `, [
+      SELECT 
+      CONCAT(YEAR(date), '-', MONTH(date)) AS date,
+        COUNT(*) AS total, 
+        SUM(people) / COUNT(*) AS avg_people 
+        FROM tb_reservations 
+        WHERE date BETWEEN ? AND  ?
+        GROUP BY CONCAT(YEAR(date), '-', MONTH(date))
+        ORDER BY date DESC
+      `,[
         req.query.start,
         req.query.end
-      ], (err, results)=> {
+      ],(err, results)=>{
 
-        if (err ){
-          reject(err);
-
-        } else {
-
+        if(err){
+          reject(err)
+        }else{
           let months = [];
           let values = [];
 
-          results.forEach(row =>{
+          results.forEach(row=>{
 
             months.push(moment(row.date).format('MMM YYYY'));
             values.push(row.total);
-
           });
 
-          resolve({
-            months,
-            values
-          });
-
+            resolve({
+              months,
+              values
+         });
         }
       });
     });
   },
 
-  dashboard(){
+dashboard(){
 
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve,reject)=>{
 
-      conn.query(`
+    conn.query(`
       SELECT
-        (SELECT COUNT(*) FROM tb_contacts) AS nrcontacts,
-        (SELECT COUNT(*) FROM tb_menus) AS nrmenus,
-        (SELECT COUNT(*) FROM tb_reservations) AS nrreservations,
-        (SELECT COUNT(*) FROM tb_users) AS nrusers;
-    `, (err, results) => {
+      (SELECT COUNT(*) FROM tb_contacts) AS nrcontacts,
+      (SELECT COUNT(*) FROM tb_menus) AS nrmenus,
+      (SELECT COUNT(*) FROM tb_reservations) AS nrreservations,
+      (SELECT COUNT(*) FROM tb_users) AS nrusers;
+    `,(err,results)=>{
 
-        if (err) {
-          reject(err);
-
-        } else {
-          
-          resolve(results[0]);
-
+        if(err){
+          reject(err)
+        }else{
+          resolve(results[0])
         }
       });
     });
-  }
-
+  } 
 }
